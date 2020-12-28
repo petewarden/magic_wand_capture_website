@@ -681,31 +681,12 @@ Array.prototype.latest = function(){return this[this.length - 1];};
         BLEsense[sensor].rendered = true;
       }
     }
-    if (skip_frame == false){ // TODO update with fuction to iterate object with viz function as a property
-//      var x = BLEsense['gyroscope'].data.x.latest();
-//      var y = BLEsense['gyroscope'].data.y.latest();
-//      var z = BLEsense['gyroscope'].data.z.latest();
-//      msg("x=" + x + ", y=" + y + ", z=" + z);
-      
-//      updateAccelerationGraph();
-//      updateVelocityGraph();
-//      updateGravityGraph();
-//      updatePositionGraph();
-//      updateGyroscopeGraph();
-//      updateOrientationGraph();
-//      updateStrokeGraph();
-      
+    if (skip_frame == false){ // TODO update with fuction to iterate object with viz function as a property      
       skip_frame = true; // render alternate frames = 30fps
     } else {skip_frame=false;}
     requestAnimationFrame(draw);
   }
   
-//  initAccelerationGraph();
-//  initVelocityGraph();
-//  initGravityGraph();
-//  initPositionGraph();
-//  initGyroscopeGraph();
-  initOrientationGraph();
   initStrokeGraph();
     
   requestAnimationFrame(draw);
