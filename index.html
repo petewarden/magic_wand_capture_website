@@ -158,7 +158,7 @@ async function connect() {
     if (BLEsense[sensor].properties.includes("BLERead")){
       BLEsense[sensor].polling = setInterval(function() {
         BLEsense[sensor].characteristic.readValue().then(function(data){handleIncoming(BLEsense[sensor],data);})}
-        , 1000);
+        , 200);
       }
 
       BLEsense[sensor].rendered = false;
