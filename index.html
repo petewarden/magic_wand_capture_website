@@ -143,10 +143,10 @@ async function connect() {
     var currentOffset = byteOffset;
     for (var i = 0; i < STROKE_POINT_COUNT; ++i) {
       var entry = {};
-      entry.x = dataview.getFloat32(currentOffset, littleEndian);
-      currentOffset += 4;
-      entry.y = dataview.getFloat32(currentOffset, littleEndian);
-      currentOffset += 4;
+      entry.x = dataview.getInt16(currentOffset, littleEndian) / 256.0;
+      currentOffset += 2;
+      entry.y = dataview.getInt16(currentOffset, littleEndian) / 256.0;
+      currentOffset += 2;
       result.push(entry);
     }
     return result;
@@ -159,7 +159,7 @@ async function connect() {
       "Uint16":   {fn:DataView.prototype.getUint16,   bytes:2},
       "Int32":    {fn:DataView.prototype.getInt32,   bytes:4},
       "Float32":  {fn:DataView.prototype.getFloat32,  bytes:4},
-      "StrokePoints": {fn:getStrokePoints, bytes:(STROKE_POINT_COUNT * 2 * 4)},
+      "StrokePoints": {fn:getStrokePoints, bytes:(STROKE_POINT_COUNT * 2 * 2)},
     };
     var packetPointer = 0,i = 0;
 
