@@ -226,6 +226,7 @@ function updateStrokeGraph() {
   var strokeData = BLEsense['stroke'].data;
   var strokeDataLength = strokeData.length.latest();
   var strokeState = strokeData.state.latest();
+  var strokePoints = strokeData.strokePoints.latest();
   
   var canvasWidth = canvas.width;
   var canvasHeight = canvas.height;
@@ -246,8 +247,8 @@ function updateStrokeGraph() {
 //    var yIndex = 'y' + i;
 //    var x = strokeData[xIndex].latest();
 //    var y = strokeData[yIndex].latest();
-    var x = strokeData.strokePoints[i].x;
-    var y = strokeData.strokePoints[i].y;
+    var x = strokePoints[i].x;
+    var y = strokePoints[i].y;
     
     var xCanvas = halfWidth - (x * halfWidth);
     var yCanvas = halfHeight - (y * halfHeight);
