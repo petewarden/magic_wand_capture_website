@@ -206,10 +206,6 @@ function updateStrokeGraph() {
   var strokeData = BLEsense['stroke'].data;
   var strokeDataLength = strokeData.length.latest();
   var strokeState = strokeData.state.latest();
-
-  if (strokeState == 0) {
-    return;
-  }
   
   var canvasWidth = canvas.width;
   var canvasHeight = canvas.height;
@@ -218,7 +214,11 @@ function updateStrokeGraph() {
 
   ctx.fillStyle = "#111111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);  
-          
+
+  if (strokeState == 0) {
+    return;
+  }
+  
   ctx.strokeStyle = "#ffffff";
   ctx.beginPath();
   for (var i = 0; i < strokeDataLength; ++i) {
