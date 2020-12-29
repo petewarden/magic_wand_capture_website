@@ -164,11 +164,15 @@ async function connect() {
     var packetPointer = 0,i = 0;
 
     // Read each sensor value in the BLE packet and push into the data array
-    sensor.structure.forEach(function(dataType){
-      // Lookup function to extract data for given sensor property type
-      var dataViewFn = typeMap[dataType].fn.bind(dataReceived);
-      // Read sensor ouput value - true => Little Endian
-      var unpackedValue = dataViewFn(packetPointer,true);
+    sensor.structure.forEach(function(dataType){      
+      var unpackedValue;
+      if (dataType === "StrokePoints") {
+        var dataViewFn = typeMap[dataType];
+        unpackedValue = dataViewFn(dataReceived, packetPointer,true);
+      } else {
+        var dataViewFn = typeMap[dataType].fn.bind(dataReceived);
+        unpackedValue = dataViewFn(packetPointer,true);
+      }
       // Push sensor reading onto data array
       sensor.data[columns[i]].push(unpackedValue);
       // Keep array at buffer size
