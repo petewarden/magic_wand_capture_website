@@ -167,7 +167,7 @@ async function connect() {
     sensor.structure.forEach(function(dataType){      
       var unpackedValue;
       if (dataType === "StrokePoints") {
-        var dataViewFn = typeMap[dataType];
+        var dataViewFn = typeMap[dataType].fn;
         unpackedValue = dataViewFn(dataReceived, packetPointer,true);
       } else {
         var dataViewFn = typeMap[dataType].fn.bind(dataReceived);
