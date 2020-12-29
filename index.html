@@ -525,7 +525,7 @@ function updateStrokeGraph() {
   var strokeDataLength = strokeData.length.latest();
   var strokeState = strokeData.state.latest();
 
-  if (strokeState !== 2) {
+  if (strokeState == 0) {
     return;
   }
   
