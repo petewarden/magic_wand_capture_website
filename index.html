@@ -251,7 +251,7 @@ function storeStroke(strokePoints) {
   
   var strokeLabel = document.querySelector('#store_' + storeIndex +' > .label');
   strokeLabel.innerText = "?";
-  strokeLabel.onChange = onLabelChange;
+  strokeLabel.onchange = onLabelChange;
   
   var strokeCanvas = document.querySelector('#store_' + storeIndex +' > canvas');
     
@@ -264,8 +264,7 @@ function storeStroke(strokePoints) {
   storedStrokes.push({
     index: storeIndex,
     strokePoints: strokePoints,
-    strokeLabel: strokeLabel,
-    strokeCanvas: strokeCanvas,
+    label: '',
   });
   
   var strokeTrash = document.querySelector('#store_' + storeIndex +' > .trash');
