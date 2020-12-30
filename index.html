@@ -12,7 +12,7 @@
 
   .button {
     background-color: aqua; border: none; color: black; padding: 1px; text-align: center;
-    text-decoration: none; font-size: 12px; margin: 12px 20px; height: 20px; width: 60px;
+    text-decoration: none; font-size: 12px; margin: 12px 20px; height: 20px; width: 100px;
     border-radius: 10%; outline:none; font-family: 'Roboto', sans-serif;
     float: left;
   }
@@ -86,9 +86,9 @@
   <div class="container">
     <div class="label">&nbsp;&nbsp;IMPORTANT - first upload <a href="https://create.arduino.cc/editor/dpajak/e4128780-d76d-438f-97a4-541740cb0473/preview">sketch</a> to Arduino Nano 33 BLE Sense board<br></div>
     <div class="status widget">
-      <button id="bigButton">Bluetooth</button>
+      <button class="button" id="bigButton">Bluetooth</button>
       <div class="bluetooth-label" id="bluetooth">Click button to connect to the board</div>
-      <button id="downloadButton">Download Data</button>
+      <button class="button" id="downloadButton">Download Data</button>
     </div>
 
     <div class="widget">
@@ -284,6 +284,7 @@ function storeStroke(strokePoints) {
     strokePoints: strokePoints,
     label: '',
   });
+  onStoreChange();
   
   var strokeTrash = document.querySelector('#store_' + storeIndex +' > .trash');
   strokeTrash.onclick = onTrashClick;
@@ -301,6 +302,7 @@ function onLabelBlur(event) {
   var index = Number(id.replace('store_', ''));
   var entry = storedStrokes.find(entry => entry.index === index);
   entry.label = event.target.innerText;
+  onStoreChange();
 }
 
 function onLabelKeydown(event) {
@@ -317,15 +319,18 @@ function onTrashClick(event) {
 
   var index = Number(id.replace('store_', ''));
   storedStrokes = storedStrokes.filter(entry => entry.index !== index);
+  onStoreChange();
 }
   
-function onDownloadClick(event) {
+function onStoreChange() {
   var data = {
     strokes: storedStrokes,
   };
   var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
-  event.target.setAttribute("href", dataStr);
-  event.target.setAttribute("download", "wanddata.json");
+
+  var downloadButton = document.querySelector('#downloadButton');
+  downloadButton.setAttribute('href', dataStr);
+  downloadButton.setAttribute('download', 'wanddata.json');
 }
   
 function initStrokeGraph() {
