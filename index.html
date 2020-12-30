@@ -235,7 +235,7 @@ function storeStroke(strokePoints) {
   var template =
 '      <div class="widget">' +
 '        <div contenteditable="true" class="label" id="store_label_' + storeIndex + '">Unknown Gesture</div>' +
-'        <canvas id="store_stroke_' + storeIndex + '" width="640px" height="640px" class="square"></canvas>' +
+'        <canvas id="store_canvas_' + storeIndex + '" width="640px" height="640px" class="square"></canvas>' +
 '      </div>';
   var storeDiv = document.querySelector('.gesture_store');
   var parser = new DOMParser();
