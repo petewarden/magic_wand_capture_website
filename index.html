@@ -237,13 +237,13 @@ function storeStroke(strokePoints) {
 '        <div contenteditable="true" class="label" id="store_label_' + storeIndex + '">Unknown Gesture</div>' +
 '        <canvas id="store_stroke_' + storeIndex + '" width="640px" height="640px" class="square"></canvas>' +
 '      </div>';
-  var store_div = document.querySelector('.gesture_store');
+  var storeDiv = document.querySelector('.gesture_store');
   var parser = new DOMParser();
   var html = parser.parseFromString(template, 'text/html');    
-  store_div.append(html.body.firstChild);
+  storeDiv.append(html.body.firstChild);
   
   var strokeLabel = document.querySelector('#store_label_' + storeIndex);
-  storeLabel.innerText = "?";
+  strokeLabel.innerText = "?";
   
   var strokeCanvas = document.querySelector('#store_canvas_' + storeIndex);
     
