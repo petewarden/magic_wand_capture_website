@@ -84,11 +84,20 @@
 <body>
 
   <div class="container">
-    <div class="label">&nbsp;&nbsp;IMPORTANT - first upload <a href="https://create.arduino.cc/editor/dpajak/e4128780-d76d-438f-97a4-541740cb0473/preview">sketch</a> to Arduino Nano 33 BLE Sense board<br></div>
+    <div class="label">
+      To get started recording magic wand gestures:
+      <ul>
+        <li>Upload the <a href="https://create.arduino.cc/editor/dpajak/e4128780-d76d-438f-97a4-541740cb0473/preview">Magic Wand Capture sketch</a> to an Arduino Nano BLE Sense board</li>
+        <li>Connect to the board using the Bluetooth button below.</li>
+        <li>Wave the wand to make gestures. They'll be recorded and displayed on the right.</li>
+        <li>Review the gestures, add labels by clicking on the '?', and remove mistakes.</li>
+        <li>Download the gestures as a JSON data file, ready for model training.</li>
+      </ul>
+    </div>
     <div class="status widget">
+      <a class="button" id="downloadButton">Download Data</a>
       <button class="button" id="bigButton">Bluetooth</button>
       <div class="bluetooth-label" id="bluetooth">Click button to connect to the board</div>
-      <button class="button" id="downloadButton">Download Data</button>
     </div>
 
     <div class="widget">
@@ -123,7 +132,7 @@ if ("bluetooth" in navigator) {
   });
   // else the browser doesn't support bluetooth
 } else {
-  msg("browser not supported"); bigButton.style.backgroundColor = "red";
+  msg("Browser not supported"); bigButton.style.backgroundColor = "red";
   alert("Error: This browser doesn't support Web Bluetooth. Try using Chrome.");
 }
 
@@ -133,7 +142,7 @@ function msg(m){
 
 async function connect() {
   bigButton.style.backgroundColor="grey";
-  msg('requesting device ...');
+  msg('Requesting device ...');
 
   const device = await navigator.bluetooth.requestDevice({
     filters: [
@@ -143,16 +152,16 @@ async function connect() {
     ]
   });
 
-  msg('connecting to device ...');
+  msg('Connecting to device ...');
   device.addEventListener('gattserverdisconnected', onDisconnected);
   const server = await device.gatt.connect();
 
-  msg('getting primary service ...');
+  msg('Getting primary service ...');
   const service = await server.getPrimaryService(SERVICE_UUID);
 
   // Set up the characteristics
   for (const sensor of sensors) {
-    msg('characteristic '+sensor+"...");
+    msg('Characteristic '+sensor+"...");
     BLEsense[sensor].characteristic = await service.getCharacteristic(BLEsense[sensor].uuid);
     // Set up notification
     if (BLEsense[sensor].properties.includes("BLENotify")){
@@ -169,7 +178,7 @@ async function connect() {
       BLEsense[sensor].rendered = false;
     }
     bigButton.style.backgroundColor = 'green';
-    msg('connected.');
+    msg('Connected.');
   }
   
   function getStrokePoints(dataview, byteOffset, littleEndian) {
