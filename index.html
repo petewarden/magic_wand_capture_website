@@ -251,7 +251,9 @@ function storeStroke(strokePoints) {
   
   var strokeLabel = document.querySelector('#store_' + storeIndex +' > .label');
   strokeLabel.innerText = "?";
+  strokeLabel.onfocus = onLabelFocus;
   strokeLabel.onblur = onLabelBlur;
+  strokeLabel.onkeydown = onLabelKeydown;
   
   var strokeCanvas = document.querySelector('#store_' + storeIndex +' > canvas');
     
@@ -271,16 +273,29 @@ function storeStroke(strokePoints) {
   strokeTrash.onclick = onTrashClick;
 }
 
-function onLabelBlur(element) {
-  var parent = element.target.parentElement;
+function onLabelFocus(event) {
+  if (event.target.innerText === '?') {
+    event.target.innerText = '';
+  }
+}
+  
+function onLabelBlur(event) {
+  var parent = event.target.parentElement;
   var id = parent.id;
   var index = Number(id.replace('store_', ''));
   var entry = storedStrokes.find(entry => entry.index === index);
-  entry.label = element.target.innerText;
+  entry.label = event.target.innerText;
 }
 
-function onTrashClick(element) {
-  var parent = element.target.parentElement;
+function onLabelKeydown(event) {
+  if (event.keyCode == 13) {
+    event.preventDefault();
+    event.target.blur();
+  }  
+}
+
+function onTrashClick(event) {
+  var parent = event.target.parentElement;
   var id = parent.id;
   parent.remove();
 
