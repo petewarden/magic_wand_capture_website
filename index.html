@@ -251,6 +251,7 @@ function storeStroke(strokePoints) {
   
   var strokeLabel = document.querySelector('#store_' + storeIndex +' > .label');
   strokeLabel.innerText = "?";
+  strokeLabel.onChange = onLabelChange;
   
   var strokeCanvas = document.querySelector('#store_' + storeIndex +' > canvas');
     
@@ -270,7 +271,15 @@ function storeStroke(strokePoints) {
   var strokeTrash = document.querySelector('#store_' + storeIndex +' > .trash');
   strokeTrash.onclick = onTrashClick;
 }
-  
+
+function onLabelChange(element) {
+  var parent = element.target.parentElement;
+  var id = parent.id;
+  var index = Number(id.replace('store_', ''));
+  var entry = storedStrokes.find(entry => entry.index === index);
+  entry.label = element.target.innerText;
+}
+
 function onTrashClick(element) {
   var parent = element.target.parentElement;
   var id = parent.id;
