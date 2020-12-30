@@ -14,6 +14,7 @@
     background-color: aqua; border: none; color: black; padding: 1px; text-align: center;
     text-decoration: none; font-size: 6px; margin: 12px 20px; height: 15px; width: 30px;
     border-radius: 10%; outline:none; font-family: 'Roboto', sans-serif;
+    float: left;
   }
 
   .container {
@@ -47,7 +48,8 @@
   }
 
   .label {
-    height: 15px;
+    height: 20px;
+    min-width: 100px;
     display: inline;
     font-size: 15px;
     float: left;
@@ -71,31 +73,11 @@
     </div>
 
     <div class="widget">
-      <div id="stroke_label" class="label">Stroke</div>
+      <div id="stroke_label" class="label"></div>
       <canvas id="stroke" width="640px" height="640px" class="square"></canvas>
     </div>
     
     <div class="gesture_store">
-
-      <div class="widget">
-        <div contenteditable="true" class="label">Unknown Gesture</div>
-        <canvas id="store_stroke_0" width="640px" height="640px" class="square"></canvas>
-      </div>
-
-      <div class="widget">
-        <div contenteditable="true" class="label">Unknown Gesture</div>
-        <canvas id="store_stroke_1" width="640px" height="640px" class="square"></canvas>
-      </div>
-
-      <div class="widget">
-        <div contenteditable="true" class="label">Unknown Gesture</div>
-        <canvas id="store_stroke_2" width="640px" height="640px" class="square"></canvas>
-      </div>
-
-      <div class="widget">
-        <div contenteditable="true" class="label">Unknown Gesture</div>
-        <canvas id="store_stroke_3" width="640px" height="640px" class="square"></canvas>
-      </div>
       
     </iframe>
   </div>
@@ -244,43 +226,55 @@ async function connect() {
       console.log(error);
     });
   }
+
+var storedStrokes = [];
+  
+function storeStroke(strokePoints) {
+  var storeIndex = storedStrokes.length;
+  
+  var template = '
+      <div class="widget">
+        <div contenteditable="true" class="label" id="store_label_' + storeIndex + '">Unknown Gesture</div>
+        <canvas id="store_stroke_' + storeIndex + '" width="640px" height="640px" class="square"></canvas>
+      </div>';
+  var store_div = document.querySelectorAll('.gesture_store');
+  var parser = new DOMParser();
+  var html = parser.parseFromString(template, 'text/html');    
+  store_div.append(html.body.firstChild);
+  
+  var strokeLabel = document.querySelectorAll('#store_label_' + storeIndex);
+  storeLabel.innerText = "?";
+  
+  var strokeCanvas = document.querySelectorAll('#store_canvas_' + storeIndex);
     
+  const ctx = strokeCanvas.getContext('2d');
+  ctx.fillStyle = "#111111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);  
+
+  drawStrokeGraph(strokeCanvas, strokePoints, strokePoints.length);
+  
+  storedStrokes.push({
+    index: storeIndex,
+    strokePoints: strokePoints,
+    strokeLabel: strokeLabel,
+    strokeCanvas: strokeCanvas,
+  });
+}
+  
 function initStrokeGraph() {
   var canvas = document.getElementById('stroke');
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = "#111111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
-    
-function updateStrokeGraph() {
-  var strokeData = BLEsense['stroke'].data;
-  var strokeDataLength = strokeData.length.latest();
-  var strokeState = strokeData.state.latest();
-  var strokePoints = strokeData.strokePoints.latest();
 
-  var label = document.getElementById('stroke_label');
-  if (strokeState == 0) {
-    label.innerText = "Waiting for gesture";
-  } else if (strokeState == 1) {
-    label.innerText = "Drawing";    
-  } else {
-    label.innerText = "Done";    
-  }
-  
-  var canvas = document.getElementById('stroke');
+function drawStrokeGraph(canvas, strokePoints, strokeDataLength) {
   const ctx = canvas.getContext('2d');
 
   var canvasWidth = canvas.width;
   var canvasHeight = canvas.height;
   var halfHeight = canvasHeight / 2;
   var halfWidth = canvasWidth / 2;
-
-  ctx.fillStyle = "#111111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);  
-
-  if (strokeState == 0) {
-    return;
-  }
   
   ctx.strokeStyle = "#ffffff";
   ctx.beginPath();
@@ -303,6 +297,40 @@ function updateStrokeGraph() {
     }
   }
   ctx.stroke();  
+  
+}
+  
+var previousStrokeState = 0;
+  
+function updateStrokeGraph() {
+  var strokeData = BLEsense['stroke'].data;
+  var strokeDataLength = strokeData.length.latest();
+  var strokeState = strokeData.state.latest();
+  var strokePoints = strokeData.strokePoints.latest();
+
+  if ((strokeState == 2) && (previousStrokeState != 2)) {
+    storeStroke(strokePoints); 
+  }
+  previousStrokeState = strokeState;
+  
+  var label = document.getElementById('stroke_label');
+  if (strokeState == 0) {
+    label.innerText = "Waiting for gesture";
+  } else if (strokeState == 1) {
+    label.innerText = "Drawing";    
+  } else {
+    label.innerText = "Done";    
+  }
+  
+  var canvas = document.getElementById('stroke');
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = "#111111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);  
+
+  if (strokeState === 1) {
+    drawStrokeGraph(canvas, strokePoints, strokeDataLength);
+  }
 }
 
 var BLEsense =
