@@ -61,6 +61,12 @@
     float: left;
     overflow-y: scroll;
   }
+    
+  .trash {
+    float: right;
+    font-size: x-large;
+    cursor: pointer;
+  }
   </style>
 </head>
 <body>
@@ -266,9 +272,12 @@ function storeStroke(strokePoints) {
 }
   
 function onTrashClick(element) {
-  var id = element.parent.id;
+  var parent = element.target.parent;
+  var id = element.target.parent.id;
+  parent.remove();
+
   var index = Number(id.replace('store_', ''));
-  console.log(index);
+  storedStrokes = storedStrokes.filter(entry => entry.index !== index);
 }
   
 function initStrokeGraph() {
@@ -307,7 +316,6 @@ function drawStrokeGraph(canvas, strokePoints, strokeDataLength) {
     }
   }
   ctx.stroke();  
-  
 }
   
 var previousStrokeState = 0;
