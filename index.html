@@ -17,7 +17,7 @@
   }
 
   .container {
-    width:960px;height:384px;margin-top:30px;margin-bottom:7.5px;  margin: 0 auto;
+    width:960px;height:384px;margin-top:30px;margin-bottom:7.5px;  margin: 0 auto; position: relative;
   }
 
   .widget {
@@ -43,6 +43,7 @@
   .square {
     width: 320px;  height: 320px;
     position: relative;
+    float: left;
   }
 
   .label {
@@ -54,7 +55,9 @@
   .gesture_store {
     width: 320px;
     height: 100%;
-  }
+    float: right;
+    overflow-y: scroll;
+    }
   </style>
 </head>
 <body>
@@ -71,7 +74,7 @@
       <canvas id="stroke" width="640px" height="640px" class="square"></canvas>
     </div>
     
-    <iframe class="gesture_store">
+    <div class="gesture_store">
 
       <div class="widget">
         <div class="label">Stroke</div>
