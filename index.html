@@ -10,15 +10,23 @@
     font-family: 'Roboto', sans-serif; color: #888888; background: #000000; font-size: small;
   }
 
-  #bigButton {
+  .button {
     background-color: aqua; border: none; color: black; padding: 1px; text-align: center;
-    text-decoration: none; font-size: 6px; margin: 12px 20px; height: 15px; width: 30px;
+    text-decoration: none; font-size: 12px; margin: 12px 20px; height: 20px; width: 60px;
     border-radius: 10%; outline:none; font-family: 'Roboto', sans-serif;
     float: left;
   }
+    
+  #bigButton {
+    float:left;
+  }
+    
+  #downloadButton {
+    float: right;
+  }
 
   .container {
-    width:960px;height:384px;margin-top:30px;margin-bottom:7.5px;  margin: 0 auto; position: relative;
+    width:860px;height:384px;margin-top:30px;margin-bottom:7.5px;  margin: 0 auto; position: relative;
   }
 
   .widget {
@@ -55,6 +63,10 @@
     float: left;
   }
     
+  .bluetooth-label {
+    margin-top: 14px;    
+  }
+    
   .gesture_store {
     width: 400px;
     height: 500px;
@@ -74,8 +86,9 @@
   <div class="container">
     <div class="label">&nbsp;&nbsp;IMPORTANT - first upload <a href="https://create.arduino.cc/editor/dpajak/e4128780-d76d-438f-97a4-541740cb0473/preview">sketch</a> to Arduino Nano 33 BLE Sense board<br></div>
     <div class="status widget">
-      <button id="bigButton"></button>
-      <div class="label" id="bluetooth">Click button to connect to the board</div>
+      <button id="bigButton">Bluetooth</button>
+      <div class="bluetooth-label" id="bluetooth">Click button to connect to the board</div>
+      <button id="downloadButton">Download Data</button>
     </div>
 
     <div class="widget">
@@ -113,6 +126,9 @@ if ("bluetooth" in navigator) {
   msg("browser not supported"); bigButton.style.backgroundColor = "red";
   alert("Error: This browser doesn't support Web Bluetooth. Try using Chrome.");
 }
+  
+const downloadButton = document.getElementById('downloadButton');
+downloadButton.addEventListener('click', onDownloadClick);
 
 function msg(m){
   BLEstatus.innerHTML = m;
@@ -301,6 +317,15 @@ function onTrashClick(event) {
 
   var index = Number(id.replace('store_', ''));
   storedStrokes = storedStrokes.filter(entry => entry.index !== index);
+}
+  
+function onDownloadClick(event) {
+  var data = {
+    strokes: storedStrokes,
+  };
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+  event.target.setAttribute("href", dataStr);
+  event.target.setAttribute("download", "wanddata.json");
 }
   
 function initStrokeGraph() {
