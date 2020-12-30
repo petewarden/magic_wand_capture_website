@@ -50,6 +50,7 @@
     height: 15px;
     display: inline;
     font-size: 15px;
+    float: left;
   }
     
   .gesture_store {
@@ -70,29 +71,29 @@
     </div>
 
     <div class="widget">
-      <div class="label">Stroke</div>
+      <div id="stroke_label" class="label">Stroke</div>
       <canvas id="stroke" width="640px" height="640px" class="square"></canvas>
     </div>
     
     <div class="gesture_store">
 
       <div class="widget">
-        <div class="label">Stroke</div>
+        <div contenteditable="true" class="label">Unknown Gesture</div>
         <canvas id="store_stroke_0" width="640px" height="640px" class="square"></canvas>
       </div>
 
       <div class="widget">
-        <div class="label">Stroke</div>
+        <div contenteditable="true" class="label">Unknown Gesture</div>
         <canvas id="store_stroke_1" width="640px" height="640px" class="square"></canvas>
       </div>
 
       <div class="widget">
-        <div class="label">Stroke</div>
+        <div contenteditable="true" class="label">Unknown Gesture</div>
         <canvas id="store_stroke_2" width="640px" height="640px" class="square"></canvas>
       </div>
 
       <div class="widget">
-        <div class="label">Stroke</div>
+        <div contenteditable="true" class="label">Unknown Gesture</div>
         <canvas id="store_stroke_3" width="640px" height="640px" class="square"></canvas>
       </div>
       
@@ -252,14 +253,23 @@ function initStrokeGraph() {
 }
     
 function updateStrokeGraph() {
-  var canvas = document.getElementById('stroke');
-  const ctx = canvas.getContext('2d');
-
   var strokeData = BLEsense['stroke'].data;
   var strokeDataLength = strokeData.length.latest();
   var strokeState = strokeData.state.latest();
   var strokePoints = strokeData.strokePoints.latest();
+
+  var label = document.getElementById('stroke_label');
+  if (strokeState == 0) {
+    label.innerText = "Waiting for gesture";
+  } else if (strokeState == 1) {
+    label.innerText = "Drawing";    
+  } else {
+    label.innerText = "Done";    
+  }
   
+  var canvas = document.getElementById('stroke');
+  const ctx = canvas.getContext('2d');
+
   var canvasWidth = canvas.width;
   var canvasHeight = canvas.height;
   var halfHeight = canvasHeight / 2;
