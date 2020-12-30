@@ -249,7 +249,7 @@ function storeStroke(strokePoints) {
     
   const ctx = strokeCanvas.getContext('2d');
   ctx.fillStyle = "#111111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);  
+  ctx.fillRect(0, 0, strokeCanvas.width, strokeCanvas.height);  
 
   drawStrokeGraph(strokeCanvas, strokePoints, strokePoints.length);
   
