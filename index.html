@@ -233,19 +233,20 @@ function storeStroke(strokePoints) {
   var storeIndex = storedStrokes.length;
   
   var template =
-'      <div class="widget">' +
-'        <div contenteditable="true" class="label" id="store_label_' + storeIndex + '">Unknown Gesture</div>' +
-'        <canvas id="store_canvas_' + storeIndex + '" width="640px" height="640px" class="square"></canvas>' +
+'      <div class="widget" id="store_' + storeIndex +'">' +
+'        <div contenteditable="true" class="label">Unknown Gesture</div>' +
+'        <div class="trash">&#128465;</div>' +
+'        <canvas width="640px" height="640px" class="square"></canvas>' +
 '      </div>';
   var storeDiv = document.querySelector('.gesture_store');
   var parser = new DOMParser();
   var html = parser.parseFromString(template, 'text/html');    
-  storeDiv.append(html.body.firstChild);
+  storeDiv.prepend(html.body.firstChild);
   
-  var strokeLabel = document.querySelector('#store_label_' + storeIndex);
+  var strokeLabel = document.querySelector('#store_' + storeIndex +' > .label');
   strokeLabel.innerText = "?";
   
-  var strokeCanvas = document.querySelector('#store_canvas_' + storeIndex);
+  var strokeCanvas = document.querySelector('#store_' + storeIndex +' > canvas');
     
   const ctx = strokeCanvas.getContext('2d');
   ctx.fillStyle = "#111111";
@@ -259,6 +260,15 @@ function storeStroke(strokePoints) {
     strokeLabel: strokeLabel,
     strokeCanvas: strokeCanvas,
   });
+  
+  var strokeTrash = document.querySelector('#store_' + storeIndex +' > .trash');
+  strokeTrash.onclick = onTrashClick;
+}
+  
+function onTrashClick(element) {
+  var id = element.parent.id;
+  var index = Number(id.replace('store_', ''));
+  console.log(index);
 }
   
 function initStrokeGraph() {
