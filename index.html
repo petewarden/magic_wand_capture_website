@@ -272,8 +272,8 @@ function storeStroke(strokePoints) {
 }
   
 function onTrashClick(element) {
-  var parent = element.target.parent;
-  var id = element.target.parent.id;
+  var parent = element.target.parentElement;
+  var id = parent.id;
   parent.remove();
 
   var index = Number(id.replace('store_', ''));
