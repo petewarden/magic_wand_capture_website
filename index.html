@@ -41,7 +41,7 @@
   }
 
   .square {
-    width: 640px;  height: 640px;
+    width: 320px;  height: 320px;
     position: relative;
   }
 
@@ -49,6 +49,11 @@
     height: 15px;
     display: inline;
     font-size: 15px;
+  }
+    
+  .gesture_store {
+    width: 320px;
+    height: 100%;
   }
   </style>
 </head>
@@ -65,6 +70,30 @@
       <div class="label">Stroke</div>
       <canvas id="stroke" width="640px" height="640px" class="square"></canvas>
     </div>
+    
+    <iframe class="gesture_store">
+
+      <div class="widget">
+        <div class="label">Stroke</div>
+        <canvas id="store_stroke_0" width="640px" height="640px" class="square"></canvas>
+      </div>
+
+      <div class="widget">
+        <div class="label">Stroke</div>
+        <canvas id="store_stroke_1" width="640px" height="640px" class="square"></canvas>
+      </div>
+
+      <div class="widget">
+        <div class="label">Stroke</div>
+        <canvas id="store_stroke_2" width="640px" height="640px" class="square"></canvas>
+      </div>
+
+      <div class="widget">
+        <div class="label">Stroke</div>
+        <canvas id="store_stroke_3" width="640px" height="640px" class="square"></canvas>
+      </div>
+      
+    </iframe>
   </div>
 </body>
 <script type="text/javascript">
