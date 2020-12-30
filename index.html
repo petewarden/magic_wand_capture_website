@@ -126,9 +126,6 @@ if ("bluetooth" in navigator) {
   msg("browser not supported"); bigButton.style.backgroundColor = "red";
   alert("Error: This browser doesn't support Web Bluetooth. Try using Chrome.");
 }
-  
-const downloadButton = document.getElementById('downloadButton');
-downloadButton.addEventListener('click', onDownloadClick);
 
 function msg(m){
   BLEstatus.innerHTML = m;
