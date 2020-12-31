@@ -368,7 +368,7 @@ function drawStrokeGraph(canvas, strokePoints, strokeDataLength) {
     var x = strokePoints[i].x;
     var y = strokePoints[i].y;
     
-    var xCanvas = halfWidth - (x * halfWidth);
+    var xCanvas = halfWidth + (x * halfWidth);
     var yCanvas = halfHeight - (y * halfHeight);
     
     if (i === 0) {
